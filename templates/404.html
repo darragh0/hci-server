@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="icon" href="/static/ico/favicon.ico" type="image/x-icon">
+    <title>404 - Page Not Found | Anti-Pawcrastinator</title>
+    <script>
+        // Apply theme immediately to prevent flashing
+        (function () {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            document.documentElement.setAttribute("data-theme", savedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="title-container">
+                <div class="logo">
+                    <i class="fas fa-cat"></i>
+                </div>
+                <h1>Anti-Pawcrastinator</h1>
+                <span class="subtitle">Focus Timer For Cat Lovers</span>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <span>Light Mode</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="error-container">
+                <div class="error-code">404</div>
+                <div class="cat-image lost-cat">
+                    <i class="fas fa-cat"></i>
+                </div>
+                <h2 class="error-title">Oops! Page Not Found</h2>
+                <p class="error-message">Looks like this page has wandered off to chase a mouse. Let's get you back on
+                    track.</p>
+                <a href="/" class="action-button">Go Home</a>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Anti-Pawcrastinator &copy; 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const themeToggle = document.getElementById("theme-toggle");
+            const savedTheme = localStorage.getItem("theme") || "light";
+
+            // Update UI
+            updateThemeToggleUI(savedTheme);
+
+            // Add event listener
+            themeToggle.addEventListener("click", () => {
+                const currentTheme = document.documentElement.getAttribute("data-theme");
+                const newTheme = currentTheme === "light" ? "dark" : "light";
+
+                document.documentElement.setAttribute("data-theme", newTheme);
+                localStorage.setItem("theme", newTheme);
+                updateThemeToggleUI(newTheme);
+            });
+
+            function updateThemeToggleUI(theme) {
+                const icon = themeToggle.querySelector("i");
+                const text = themeToggle.querySelector("span");
+
+                if (theme === "light") {
+                    icon.className = "fas fa-sun";
+                    text.textContent = "Light Mode";
+                } else {
+                    icon.className = "fas fa-moon";
+                    text.textContent = "Dark Mode";
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" href="/static/ico/favicon.ico" type="image/x-icon">
+  <script src="/static/js/script.js" defer></script>
+  <title>Anti-Pawcrastinator</title>
+</head>
+
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="title-container">
+        <div class="logo">
+          <i class="fas fa-cat"></i>
+        </div>
+        <h1>Anti-Pawcrastinator</h1>
+        <span class="subtitle">Focus Timer For Cat Lovers</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle">
+          <i class="fas fa-sun"></i>
+          <span>Light Mode</span>
+        </button>
+        <span class="current-time" id="current-time"></span>
+      </div>
+    </header>
+
+    <main>
+      <div class="dashboard">
+        <div class="stats-container">
+          <div class="stat-card primary">
+            <div class="stat-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-title">Total Sessions</div>
+              <div class="stat-value">{{ total_sessions }}</div>
+            </div>
+          </div>
+
+          <div class="stat-card secondary">
+            <div class="stat-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-title">Total Focus Time</div>
+              <div class="stat-value">{{ total_dur }} mins</div>
+            </div>
+          </div>
+
+          <div class="stat-card tertiary">
+            <div class="stat-icon">
+              <i class="fas fa-stopwatch"></i>
+            </div>
+            <div class="stat-details">
+              <div class="stat-title">Avg. Session Length</div>
+              <div class="stat-value">{{ "%0.2f" % avg_dur|float }} mins</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card active-card">
+          <div class="card-header">
+            <h2 class="card-title">Current Focus Session</h2>
+            <div id="session-status" class="session-inactive">Not currently focused</div>
+          </div>
+          <div class="card-content active-session-container">
+            <div id="active-session" class="active-session hidden">
+              <div class="session-timer">
+                <div class="timer-display">
+                  <span id="timer-hrs">00</span>:<span id="timer-mins">00</span>:<span id="timer-secs">00</span>
+                </div>
+                <div class="timer-label">Time Focused</div>
+              </div>
+              <div class="meow-counter">
+                <div class="counter-value" id="meow-count">0</div>
+                <div class="counter-label">Encouragement Meows</div>
+              </div>
+            </div>
+            <div id="no-active-session" class="no-active">
+              <div class="cat-image">
+                <i class="fas fa-cat"></i>
+              </div>
+              <p class="empty-message">No active focus session. Turn on your device to start tracking!</p>
+              <button id="simulate-start" class="action-button">Start Session (Demo)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">Recent Sessions</h2>
+            <div class="card-actions">
+              <button id="view-all" class="text-button">View All</button>
+            </div>
+          </div>
+          <div class="card-content">
+            {% if sessions %}
+            <div class="sessions-list">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Started At</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for session in sessions|reverse %}
+                  {% if loop.index <= 5 %} <tr>
+                    <td>{{ session.start_time.split('T')[0] }}</td>
+                    <td>{{ session.start_time.split('T')[1][:5] }}</td>
+                    <td>
+                      {% if session.duration_mins is defined %}
+                      {{ session.duration_mins}} mins
+                      {% else %}
+                      In Progress
+                      {% endif %}
+                    </td>
+                    <td>
+                      <span class="status-badge {{ session.status }}">
+                        {{ session.status }}
+                      </span>
+                    </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+              <div class="cat-image sleeping">
+                <i class="fas fa-cat"></i>
+              </div>
+              <p>No focus sessions recorded yet. Time to defeat pawcrastination!</p>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>Anti-Pawcrastinator &copy; 2025 | <span id="end-session" class="footer-link">End Current Session</span></p>
+    </footer>
+  </div>
+
+</body>
+
+</html>
