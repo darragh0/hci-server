@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/static/ico/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/base.css">
+  {% block css %}
+  {% endblock %}
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.js"
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="/static/js/base.js" defer></script>
+  <script type="text/javascript" defer>
+    (() => {
+      const savedTheme = localStorage.getItem("theme") || "light";
+      $("html").attr("data-theme", savedTheme);
+    })();
+  </script>
+  {% block js %}
+  {% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+  <div class="app-container">
+    <header>
+      <div class="title-container">
+        <div class="logo">
+          <i class="fas fa-cat"></i>
+        </div>
+        <h1>Anti-Pawcrastinator</h1>
+        <span class="subtitle">Focus Timer For Cat Lovers</span>
+      </div>
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle">
+          <i class="fas fa-sun"></i>
+          <span>Light Mode</span>
+        </button>
+        {% block clock %}
+        {% endblock %}
+      </div>
+    </header>
+
+    <main>
+      {% block main %}
+      {% endblock %}
+    </main>
+
+    <footer>
+      <p>Anti-Pawcrastinator &copy; 2025</p>
+    </footer>
+
+  </div>
+</body>
+
+</html>

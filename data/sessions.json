@@ -1,8 +1,1 @@
-[
-    {
-        "id": "1",
-        "device_id": "anti-paw-01",
-        "start_time": "2025-03-19T21:23:46.904628",
-        "status": "active"
-    }
-]
+[{"id": "1", "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T03:52:39.448257", "status": "completed", "meows": 1, "purrs": 0, "hisses": 1, "end_time": "2025-03-20T03:53:09.958708", "duration_mins": 0.5}, {"id": "2", "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T03:53:16.674312", "status": "completed", "meows": 0, "purrs": 0, "hisses": 0, "end_time": "2025-03-20T03:56:16.502862", "duration_mins": 3.0}, {"id": 3, "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T04:00:27.849759", "status": "completed", "meows": 0, "purrs": 0, "hisses": 0, "end_time": "2025-03-20T04:00:40.443360", "duration_mins": 0.2}, {"id": 4, "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T04:06:19.966989", "status": "completed", "meows": 0, "purrs": 0, "hisses": 0, "end_time": "2025-03-20T04:06:27.981596", "duration_mins": 0.1}, {"id": 5, "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T04:16:14.805154", "status": "completed", "meows": 0, "purrs": 0, "hisses": 0, "end_time": "2025-03-20T04:19:56.513347", "duration_mins": 3.7}, {"id": 6, "device_id": "anti-pawcrastinator", "start_time": "2025-03-20T14:01:36.004898", "status": "completed", "meows": 0, "purrs": 0, "hisses": 0, "end_time": "2025-03-20T14:07:23.234673", "duration_mins": 5.8}]

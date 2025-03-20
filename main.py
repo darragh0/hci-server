@@ -1,17 +1,13 @@
-from datetime import datetime
-from datetime import datetime as dt
+from flask import request
 
-from fastapi import Request
-from fastapi.responses import HTMLResponse
+from util import App, JSONObj, SessionData, StatusCode
 
-from util import App, JSONObj, SessionData
-
-app: App = App(title="Anti-Pawcrastinator", version="0.1.0")
-ses_data: SessionData = SessionData()
+app: App = App("Anti-Pawcrastinator")
+ses_data: SessionData = SessionData("anti-pawcrastinator")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def html(request: Request) -> HTMLResponse:
+@app.route("/", methods=["GET"])
+def html() -> str:
     return app.html(
         "index.html",
         request=request,
@@ -22,49 +18,40 @@ async def html(request: Request) -> HTMLResponse:
     )
 
 
-@app.post("/api/session/start")
-async def start_ses(request: Request) -> JSONObj:
-    data = await request.json()
-    device_id = data.get("device_id", "default")
+@app.route("/api/session/start", methods=["POST"])
+def start_ses() -> JSONObj:
+    data = request.get_json()
+    status: StatusCode = ses_data.add_ses(data)
 
-    # Create new session
-    session = {
-        "id": str(ses_data.total_count + 1),
-        "device_id": device_id,
-        "start_time": datetime.now().isoformat(),
-        "status": "active",
-    }
-
-    ses_data.add(session)
-    return app.success(session_id=session["id"])
+    return app.response(status)
 
 
-@app.post("/api/session/end")
-async def end_ses(request: Request) -> JSONObj:
-    data: JSONObj = await request.json()
-    device_id: str = data.get("device_id", "default")
+@app.route("/api/session/end", methods=["POST"])
+def end_ses() -> JSONObj:
+    data: JSONObj = request.get_json()
+    status: StatusCode = ses_data.end_ses(data)
 
-    # Find active session for the device
+    return app.response(status)
+
+
+@app.route("/api/session/sound", methods=["POST"])
+def update_ses() -> JSONObj:
+    data: JSONObj = request.get_json()
+    status: StatusCode = ses_data.update_ses(data)
+
+    return app.response(status)
+
+
+@app.route("/api/session/active", methods=["GET"])
+def get_active_session() -> JSONObj:
     for ses in ses_data:
-        if ses["device_id"] == device_id and ses["status"] == "active":
-            ses["status"] = "completed"
-            ses["end_time"] = datetime.now().isoformat()
-
-            # Calculate duration
-            start: dt = datetime.fromisoformat(ses["start_time"])
-            end: dt = datetime.fromisoformat(ses["end_time"])
-            duration: float = (end - start).total_seconds() / 60
-            ses["duration_mins"] = round(duration, 1)
-
-            ses_data.save()
-
-            return {"status": "success", "session_id": ses["id"]}
-
-    return app.err("No active session found for this device")
+        if ses["status"] == "active":
+            return {"session": ses}
+    return {"session": None}
 
 
-@app.get("/api/sessions")
-async def get_sessions() -> JSONObj:
+@app.route("/api/session/all", methods=["GET"])
+def get_all_sessions() -> JSONObj:
     return {"sessions": ses_data.data}
 
 

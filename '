@@ -3,12 +3,15 @@ from typing import Any
 from flask import Flask, render_template
 from flask_cors import CORS
 
+from util._config import Config, get_config
 from util._types import JSONObj, StatusCode
 
 
 class App(Flask):
-    def __init__(self, import_name: str):
-        super().__init__(import_name=import_name)
+    cfg: Config
+
+    def __init__(self, title: str, version: str):
+        super().__init__(__name__)
 
         # Enable CORS
         CORS(
@@ -19,15 +22,21 @@ class App(Flask):
             allow_headers=["*"],
         )
 
+        self.cfg = get_config()
+
         # Register error handlers
         self.register_error_handler(404, self.not_found_handler)
+
+        self.title = title
+        self.version = version
+        self.static_folder = "static"
+        self.template_folder = "templates"
 
     def html(self, file: str, **kwargs) -> str:
         return render_template(file, **kwargs)
 
-    def run(self, debug=True, port=5000):
-        """Run the application on all interfaces (0.0.0.0)"""
-        super().run(host='0.0.0.0', port=port, debug=debug)
+    def run(self) -> None:
+        super().run(host=self.cfg.host, port=self.cfg.port)
 
     def _err(self, msg: str) -> JSONObj:
         return {"status": "error", "message": msg}
